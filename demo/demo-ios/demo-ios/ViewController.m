@@ -9,7 +9,29 @@
 #import "ViewController.h"
 #import "PlayerViewController.h"
 
+@interface ViewController()
+
+@property(nonatomic, strong) NSArray *testVideoList;
+
+@end
+
 @implementation ViewController
+
+- (NSArray *)testVideoList {
+    
+    if (!_testVideoList) {
+        NSString * resourcePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"testvideo"];
+        NSError * error;
+        _testVideoList =  [[NSFileManager defaultManager] contentsOfDirectoryAtPath:resourcePath error:&error];
+    }
+    return _testVideoList;
+}
+
+-(void)viewDidLoad {
+   
+    
+    [self.tableView reloadData];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -18,20 +40,31 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 9;
+    return 9 + self.testVideoList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    cell.textLabel.text = [PlayerViewController displayNameForDemoType:indexPath.row];
+    if (indexPath.row < 9) {
+       cell.textLabel.text = [PlayerViewController displayNameForDemoType:indexPath.row];
+    } else {
+       cell.textLabel.text =   [self.testVideoList objectAtIndex:indexPath.row - 9];
+    }
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PlayerViewController * obj = [[PlayerViewController alloc] init];
-    obj.demoType = indexPath.row;
+    if (indexPath.row < 9) {
+        obj.demoType = indexPath.row;
+    } else {
+        obj.demoType = DemoType_Default_FFmpeg;
+        obj.filename = [self.testVideoList objectAtIndex:indexPath.row - 9];
+    }
+    
     [self.navigationController pushViewController:obj animated:YES];
 }
 

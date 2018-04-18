@@ -88,6 +88,12 @@
             self.player.decoder = [SGPlayerDecoder decoderByFFmpeg];
             [self.player replaceVideoWithURL:vrVideo videoType:SGVideoTypeVR];
             break;
+        case DemoType_Default_FFmpeg:
+            self.player.decoder = [SGPlayerDecoder decoderByFFmpeg];
+            self.player.decoder.hardwareAccelerateEnableForFFmpeg = NO;
+           NSString *path =  [[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"testvideo"] stringByAppendingPathComponent:self.filename];
+            [self.player replaceVideoWithURL:[NSURL fileURLWithPath: path]];
+            break;
     }
 }
 

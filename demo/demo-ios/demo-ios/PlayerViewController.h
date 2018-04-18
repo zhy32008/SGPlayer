@@ -18,11 +18,13 @@ typedef NS_ENUM(NSUInteger, DemoType) {
     DemoType_FFmpeg_VR_Hardware,
     DemoType_FFmpeg_VR_Box,
     DemoType_FFmpeg_VR_Box_Hardware,
+    DemoType_Default_FFmpeg,
 };
 
 @interface PlayerViewController : UIViewController
 
 @property (nonatomic, assign) DemoType demoType;
+@property (nonatomic, copy) NSString *filename;
 
 + (NSString *)displayNameForDemoType:(DemoType)demoType;
 
