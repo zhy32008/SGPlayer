@@ -149,6 +149,30 @@
     [self.player seekToTime:self.player.duration * self.progressSilder.value];
 }
 
+- (IBAction)snapshot:(id)sender {
+    SGPLFImage *image =  [self.player snapshot];
+    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+}
+
+- (IBAction)fastFward:(id)sender  {
+    __weak typeof(self) weakSelf = self;
+    [self.player seekToTime:self.player.duration * self.progressSilder.value + 5 completeHandler:^(BOOL finished) {
+        if (finished) {
+            [weakSelf.player play];
+        }
+    }];
+}
+
+- (IBAction)fastReverse:(id)sender {
+    __weak typeof(self) weakSelf = self;
+    [self.player seekToTime:self.player.duration * self.progressSilder.value - 5 completeHandler:^(BOOL finished) {
+        if (finished) {
+            [weakSelf.player play];
+        }
+    }];
+
+}
+
 - (void)stateAction:(NSNotification *)notification
 {
     SGState * state = [SGState stateFromUserInfo:notification.userInfo];

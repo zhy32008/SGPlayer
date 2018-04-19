@@ -177,12 +177,11 @@ static NSString * const AVMediaSelectionOptionTrackIDKey = @"MediaSelectionOptio
         }
         return;
     }
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         self.seeking = YES;
         [self startBuffering];
         SGWeakSelf
-        [self.avPlayerItem seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC) completionHandler:^(BOOL finished) {
+        [self.avPlayerItem seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 SGStrongSelf
                 self.seeking = NO;
@@ -194,6 +193,18 @@ static NSString * const AVMediaSelectionOptionTrackIDKey = @"MediaSelectionOptio
                 SGPlayerLog(@"SGAVPlayer seek success");
             });
         }];
+//        [self.avPlayerItem seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC) completionHandler:^(BOOL finished) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                SGStrongSelf
+//                self.seeking = NO;
+//                [strongSelf stopBuffering];
+//                [strongSelf resumeStateAfterBuffering];
+//                if (completeHandler) {
+//                    completeHandler(finished);
+//                }
+//                SGPlayerLog(@"SGAVPlayer seek success");
+//            });
+//        }];
     });
 }
 
