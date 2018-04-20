@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, DemoType) {
     DemoType_FFmpeg_VR_Box,
     DemoType_FFmpeg_VR_Box_Hardware,
     DemoType_Default_FFmpeg,
+    DemoType_Default_FFmpeg_url,
 };
 
 @interface PlayerViewController : UIViewController
